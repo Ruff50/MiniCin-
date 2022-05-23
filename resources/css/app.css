@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer components {
+    .btn-blue {
+      @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+    }
+    .th-amber {
+        @apply  px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-amber-800 uppercase border-b border-amber-200 bg-amber-100;
+      }
+      .input{
+        @apply border shadow-inner py-2 px-3 text-gray-700 w-full;
+    }
+    .input:focus {
+        @apply shadow-lg;
+    }
+    .btn{
+       @apply bg-blue-500 text-white px-4 py-2 rounded  self-start;
+    }
+    .btn :hover{
+        @apply bg-blue-600;
+    }
+  }
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.titre{
+  @apply flex justify-center flex-1 font-serif text-3xl font-bold;
+}
+
+.btn{
+ @apply px-4 py-2 rounded-md bg-red-800 text-sky-100 hover:bg-sky-600;
+}
+
+.table-top{
+  @apply inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg;
+}
+
+.top-class{
+@apply px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50;
+}
+
+.text-tab{
+  @apply px-6 py-3 text-sm text-left text-gray-500 border-b border-gray-200 bg-gray-50;
+}
+
+.txt-tab{
+  @apply text-sm font-medium leading-5 text-center border-b border-gray-200 whitespace-nowrap;
+}
+
+.line{
+ @apply px-6 py-4 border-b border-gray-200 whitespace-nowrap;
+}
