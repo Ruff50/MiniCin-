@@ -19,4 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 });
-Route::resource('Films',Filmscontroller::class);
+Route::resource('Films_Crud',Filmscontroller::class);
+
+Route::get('Films', [Filmscontroller::class, 'getall'])->name('Films');
+
+Route::post('Films', [Filmscontroller::class, 'add']);

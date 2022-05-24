@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Films;
+use App\Models\Salles;
+use App\Models\Réalisateur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class Filmscontroller extends Controller
 {
@@ -16,11 +19,26 @@ class Filmscontroller extends Controller
         $films = Films::with('salle')->get();
         //dd($films);
         return view(
-            'Films.index',
+            'Films_Crud.index',
             [
                 'Films' => $films
             ]
         );
+    }
+
+    function getall()
+    {
+        $cines = Films::with('salle')->get();
+        $real=Réalisateur::all();
+
+        return view(
+            'Films',
+            [
+                'films' => $cines,
+                'realisateurs'=>$real
+            ]
+        );
+       
     }
 
 
@@ -29,10 +47,43 @@ class Filmscontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function add(Request $request)
     {
-        //
+       $input = $request->input();
+        
+       $path = $request->file('affiche')->store('/images','public');
+      // dd($request->file('affiche'));
+        $name = $request->file('affiche')->getClientOriginalName();
+        $extension = $request->file('affiche')->getClientOriginalExtension();
+      if (($name) && ($extension)) {
+        $request->validate([
+            'title' => 'required|max:255',
+            'contenu' => 'required',
+            'affiche' =>'required',
+            'duree'=> 'required',
+            'datedesortie'=> 'required',
+            'langue'=> 'required',
+            'csa'=> 'required'
+        ]);
+
+
+        $film = new Films();
+        $film->titre = $request->title;
+        $film->affiche = $path;
+        $film->duree = $request->duree;
+        $film->synopsis = $request->contenu;
+        $film->datedesortie = $request->datedesortie;
+        $film->langue = $request->langue;
+        $film->csa = $request->csa;
+        $film->realisateurs_id = $request->realisateur;
+        $film->salles_id= $request->salles_id;
+        $film->save();
+        return redirect()->route('Films')->with('status', 'le film a bien été ajouté !');
+    } else {
+        return redirect()->route('Films')->with('status', 'problème lors du chargement de l\image');
     }
+    }
+  
 
     /**
      * Store a newly created resource in storage.

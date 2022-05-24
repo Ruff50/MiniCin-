@@ -7,7 +7,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <title>MiniCiné</title>
 </head>
-<body class="w-full flex flex-col justify-between">
+<body class="w-full flex flex-col justify-between bg-gray-900">
 @include('layouts/header') 
 <main class="h-full">
    @yield('main')  

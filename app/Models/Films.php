@@ -13,5 +13,8 @@ class Films extends Model
     {
         return $this->belongsTo(Salles::class, 'salles_id');
     }
-
+    public function realisateur()
+    {
+        return $this->belongsTo(Réalisateur::class, 'realisateurs_id');
+    }
 }
