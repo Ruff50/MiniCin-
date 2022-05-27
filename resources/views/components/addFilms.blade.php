@@ -106,7 +106,16 @@
         <select name="salle">
         @foreach ($films as $film)
         <option value="{{$film->salle->id}}">{{$film->salle->nom}}</option>   
-      @endforeach   
+        @endforeach 
+      </select>
+        <select name="categorie" id="categorie">
+          @foreach($films as $film)
+          @foreach ($film->categories as $cat) 
+          <option value="{{$cat->id}}">{{$cat->label}}</option> 
+          @endforeach 
+          @endforeach 
+        </select>  
+        
     <input type="submit" value="Créer votre film" class="w-full text-gray-100 hover:text-gray-700
     bg-yellow-400 rounded border border-primary dark:border-slate-600 p-3 transition ease-in-out
     duration-500 hover:bg-yellow-300 mt-14">

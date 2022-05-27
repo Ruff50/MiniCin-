@@ -17,4 +17,13 @@ class Films extends Model
     {
         return $this->belongsTo(Réalisateur::class, 'realisateurs_id');
     }
+    public function categories()
+    {
+        return $this->belongsToMany(Categorie::class,'categorie_films', 'films_id', 'categorie_id');
+    }
+    
 }
+
+
+
+
