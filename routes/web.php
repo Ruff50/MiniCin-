@@ -23,4 +23,3 @@ Route::resource('Films_Crud',Filmscontroller::class);
 
 Route::get('Films', [Filmscontroller::class, 'getall'])->name('Films');
 
-Route::post('Films', [Filmscontroller::class, 'add']);

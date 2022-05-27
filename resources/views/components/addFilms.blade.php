@@ -30,11 +30,19 @@
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
 <h1 class="text-3xl text-center font-bold text-gray-900 mt-20 mb-10">Créer un film</h1>
-
+@if ($errors->any())
+<div class="text-red-600 text-2xl text-left font-semibold">
+<ul>
+    @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+    @endforeach
+</ul>
+</div>
+@endif
 
 
 <div class="bg-gray-100 dark:bg-slate-800 relative rounded-lg p-8 sm:p-12 shadow-lg">
-<form action="/Films" method="POST" enctype="multipart/form-data">
+<form action="{{Route('Films_Crud.store')}}" method="POST" enctype="multipart/form-data">
     <br>
     @csrf
 

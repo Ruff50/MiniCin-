@@ -18,28 +18,28 @@ class Filmscontroller extends Controller
      */
     public function index()
     {
-        $films = Films::with('salle')->get();
-        //dd($films);
-        return view(
-            'Films_Crud.index',
-            [
-                'Films' => $films,
-            ]
-        );
-    }
-
-    function getall()
-    {
         $cines = Films::with('salle')->with('categories')->get();
         $real = Réalisateur::all();
 
         return view(
-            'Films',
+            'Films_Crud.index',
             [
                 'films' => $cines,
                 'realisateurs' => $real
             ]
-        );
+        );      
+    }
+
+    public function getall()
+    {
+        $films = Films::with('salle')->get();
+        //dd($films);
+        return view(
+            'Films',
+            [
+                'Films' => $films
+            ]
+        );  
     }
 
 
@@ -50,41 +50,7 @@ class Filmscontroller extends Controller
      */
     public function add(Request $request)
     {
-        $input = $request->input();
-
-        $path = $request->file('affiche')->store('/images', 'public');
-        // dd($request->file('affiche'));
-        $name = $request->file('affiche')->getClientOriginalName();
-        $extension = $request->file('affiche')->getClientOriginalExtension();
-        if (($name) && ($extension)) {
-            $request->validate([
-                'title' => 'required|max:255',
-                'contenu' => 'required',
-                'affiche' => 'required',
-                'duree' => 'required',
-                'datedesortie' => 'required',
-                'langue' => 'required',
-                'csa' => 'required'
-            ]);
-
-
-            $film = new Films();
-            $film->titre = $request->title;
-            $film->affiche = $path;
-            $film->duree = $request->duree;
-            $film->synopsis = $request->contenu;
-            $film->datedesortie = $request->datedesortie;
-            $film->langue = $request->langue;
-            $film->csa = $request->csa;
-            $film->realisateurs_id = $request->realisateur;
-            $film->salles_id = $request->salles_id;
-            $film->save();
-            return redirect()->route('Films')->with('status', 'le film a bien été ajouté !');
-        } else {
-            return redirect()->route('Films')->with('status', 'problème lors du chargement de l\image');
-        }
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -94,8 +60,46 @@ class Filmscontroller extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $input = $request->input();
+        $request->validate([
+            'title' => 'required|max:255',
+            'contenu' => 'required',
+            'duree' => 'required',
+            'datedesortie' => 'required',
+            'langue' => 'required',
+            'csa' => 'required'
+        ]);
+
+        $film = new Films();
+        $film->titre = $request->title;
+        if (null!==($request->file('affiche'))) {
+            $name = $request->file('affiche')->getClientOriginalName();
+            $extension = $request->file('affiche')->getClientOriginalExtension();
+                 
+            if (($name) && ($extension)) {
+                $path = $request->file('affiche')->store('/images', 'public');
+                $film->affiche = $path;
+            } else {
+                return redirect()->route('Films_Crud.index')->with('status', 'problème lors du chargement de l\image');
+            } 
+        }else {
+                return redirect()->route('Films_Crud.index')->with('status', 'veuillez sélectionner une image svp'); 
+
+            }
+        
+            $film->duree = $request->duree;
+            $film->synopsis = $request->contenu;
+            $film->datedesortie = $request->datedesortie;
+            $film->langue = $request->langue;
+            $film->csa = $request->csa;
+            $film->realisateurs_id = $request->realisateur;
+            $film->salles_id = $request->salle;
+            $film->save();
+            return redirect()->route('Films_Crud.index')->with('status', 'le film a bien été ajouté !');
+       
+        }
+
+  
 
     /**
      * Display the specified resource.
@@ -105,6 +109,14 @@ class Filmscontroller extends Controller
      */
     public function show($id)
     {
+        $film = Films::findOrFail($id);
+        $real = Réalisateur::all();
+        $sal=Salles::all();
+        return view('Films_Crud.show', [
+            'film' => $film,
+            'realisateurs' => $real,
+            'salles'=>$sal
+        ]);
     }
 
     /**
@@ -115,8 +127,16 @@ class Filmscontroller extends Controller
      */
     public function edit($id)
     {
-        //
+        $film= Films::find($id);
+        $real = Réalisateur::all();
+        $sal=Salles::all();
+        return view('Films_Crud.edit', [
+            'film' => $film,
+            'realisateurs' => $real,
+            'salles'=>$sal
+        ]);
     }
+   
 
     /**
      * Update the specified resource in storage.
@@ -127,8 +147,42 @@ class Filmscontroller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'contenu' => 'required',
+            'duree' => 'required',
+            'datedesortie' => 'required',
+            'langue' => 'required',
+            'csa' => 'required',
+            'salle' => 'required',
+        ]);
+        $film= Films::find($id);
+        if (null!==($request->file('affiche'))) {
+        $name = $request->file('affiche')->getClientOriginalName();
+        $extension = $request->file('affiche')->getClientOriginalExtension();
+             
+        if (($name) && ($extension)) {
+            $path = $request->file('affiche')->store('/images', 'public');
+            $film->affiche = $path;
+        } else {
+            return redirect()->route('Films_Crud.index')->with('status', 'problème lors du chargement de l\image');
+        } 
+        }
+            $film->titre = $request->title;
+            
+            $film->duree = $request->duree;
+            $film->synopsis = $request->contenu;
+            $film->datedesortie = $request->datedesortie;
+            $film->langue = $request->langue;
+            $film->csa = $request->csa;
+            $film->realisateurs_id = $request->realisateur;
+            $film->salles_id = $request->salle;
+            $film->save();
+            return redirect()->route('Films_Crud.index')->with('status', 'le film a bien été modifié !');
+        
+        }
+   
 
     /**
      * Remove the specified resource from storage.
@@ -138,6 +192,7 @@ class Filmscontroller extends Controller
      */
     public function destroy($id)
     {
-        //
+        Films::find($id)->delete();
+        return  redirect()->route('Films_Crud.index')->with('status', 'le film a bien été supprimé !');
     }
 }

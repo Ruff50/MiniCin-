@@ -1,29 +1,75 @@
 @extends('layouts/app')
-    
+
+
+
+
 @section('main')
 
-<section class="text-black body-font">
-    <div class="container px-5 py-24 mx-auto">
-      <div class="flex flex-wrap -m-4">
-        @foreach ($Films as $film)  
-          <div class="p-4 md:w-1/3">
-          <div class="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden">              
-            <img class="lg:h-96 md:h-72 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100" src="{{asset('storage/' . $film->affiche)}}" alt="image">
-            <div class="p-6">
-              <h2 class="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">{{$film->salle->nom}}</h2>
-              <h1 class="title-font text-lg font-medium text-red-600 mb-3">{{$film->titre}}</h1>
-              <p class="leading-relaxed mb-3">{{$film->synopsis}}</p>
-              <div class="flex items-center flex-wrap ">
-                <button class="bg-gradient-to-r from-red-700 to-gray-500 text-white hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg">Learn more</button>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-       @endforeach
-      </div>
+@include('components/addFilms')
+
+    <h1 class="text-3xl text-center font-bold text-gray-300 mt-20 mb-10">Liste des Films</h1>
+    @if (session('status'))
+    <div class="text-3xl text-left font-bold text-green-600 mt-20 mb-10">
+        {{ session('status') }}
     </div>
-  </section>
+@endif
+@if ($errors->any())
+<div class="text-red-600 text-2xl text-left font-semibold">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+    <table class="min-w-full mb-14">
+      <thead class="h-12">
+        <tr>
+          <th
+            class="text-white bg-gray-600">
+            Titre</th>
+            <th
+            class="text-white bg-gray-600">
+            Réalisateur</th>  
+            <th
+            class="text-white bg-gray-600">
+            Action</
+          </tr>
+      </thead>
+
+      <tbody class="bg-gray-900">
+       
+        @foreach ($films as $film)  
+        
+        <tr>
+          <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+              <div class="flex items-center font-bold text-red-600">
+                <a href="{{route('Films_Crud.show', $film->id)}}"> {{ $film->titre}}</a>
+              </div>
+
+            </td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+              <div class="flex items-center font-bold text-red-600">
+                <a href="/realisateur/{{$film->realisateurs_id}}"> {{ $film->realisateur->prenom}} {{ $film->realisateur->nom}}</a>
+              </div>
+
+            </td>
+            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+              <div class="flex items-center justify-between font-bold text-red-600 flex1 m-0">
+                <a href="{{route('Films_Crud.edit', $film->id)}}" style="color:darkgreen">Mettre à jour</a>
+                <form action="{{route('Films_Crud.destroy', $film->id)}}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                <input type="submit" value="Supprimer">
+                </form>  
+              </div>
+ 
+            </td>
+        </tr>
+        @endforeach 
+    </tbody>
+  </table>   
 
 
+    
 @endsection
