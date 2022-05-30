@@ -61,7 +61,7 @@
         </div>
         <div class="mb-6">
             <label for="duree">durée:</label>
-            <input id="duree" type="text" name="duree" value="{{$film->duree}}" class="w-full rounded p-3 text-gray-800 dark:text-gray-50 dark:bg-slate-700
+            <input id="duree" type="time" name="duree" value="{{$film->duree}}" class="w-full rounded p-3 text-gray-800 dark:text-gray-50 dark:bg-slate-700
             border-gray-500 dark:border-slate-600 outline-none focus-visible:shadow-none focus:border-primary"
             >
         </div>
