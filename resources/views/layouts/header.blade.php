@@ -20,8 +20,8 @@
             <nav class="hidden md:flex space-x-10">
           
       
-              <a href="#" class="text-base font-bold text-red-500 hover:text-black"> REX </a>
-              <a href="#" class="text-base font-bold text-red-500 hover:text-black"> TOUS LES FILMS </a
+              <a href="/Films_Crud" class="text-base font-bold text-red-500 hover:text-black"> REX </a>
+              <a href="/Films" class="text-base font-bold text-red-500 hover:text-black"> TOUS LES FILMS </a
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
               <a href="#" class="whitespace-nowrap text-base font-bold text-red-500 hover:text-black"> Sign in </a>
               <a href="#" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"> Sign up </a>
